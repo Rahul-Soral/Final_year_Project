@@ -46,10 +46,9 @@ const PolicyService = {
       } else if (!error.response) {
         throw { message: 'Network error. Please check your connection.' };
       } else if (error.response.status === 401) {
-        // Token expired, force re-login
+        // Token expired, clear it but don't force redirect
         AuthService.logout();
-        window.location.href = '/login';
-        throw { message: 'Session expired. Please log in again.' };
+        throw { message: 'Authentication expired. Some features may be limited.' };
       } else if (error.response.status >= 500) {
         throw { message: 'Server error. Please try again later.' };
       }

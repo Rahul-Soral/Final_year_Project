@@ -31,17 +31,18 @@ api.interceptors.request.use(
   }
 );
 
-// Handle token expiration
+// Handle token expiration (but don't force redirect to login)
 api.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Token expired or invalid
+      // Token expired or invalid - clear it but don't redirect
+      // Users can continue using the app without authentication
       localStorage.removeItem('acko_token');
       localStorage.removeItem('acko_user');
-      window.location.href = '/login';
+      console.log('Authentication token cleared - continuing without authentication');
     }
     return Promise.reject(error);
   }

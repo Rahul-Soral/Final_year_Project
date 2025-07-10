@@ -21,6 +21,7 @@ import {
   FaTrafficLight,
   FaUser
 } from 'react-icons/fa';
+import VehicleDropdown from '../../../VehicleDropdown/VehicleDropdown';
 import './BikeClaimForm.css';
 
 const BikeClaimForm = () => {
@@ -163,18 +164,12 @@ const BikeClaimForm = () => {
           </div>
         </div>
         <div className="form-group">
-          <label htmlFor="bikeNumber">Bike Registration Number</label>
-          <div className="input-with-icon">
-            <FaMotorcycle className="input-icon" />
-            <input
-              type="text"
-              id="bikeNumber"
-              name="bikeNumber"
-              value={basicInfo.bikeNumber}
-              onChange={handleBasicInfoChange}
-              placeholder="Enter your bike registration number"
-            />
-          </div>
+          <VehicleDropdown
+            value={basicInfo.bikeNumber}
+            onChange={(value) => handleBasicInfoChange({ target: { name: 'bikeNumber', value } })}
+            placeholder="Enter your bike registration number or select from demo database"
+            type="bike"
+          />
         </div>
         <div className="form-row">
           <div className="form-group">

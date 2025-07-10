@@ -193,5 +193,84 @@ export const vehicleData = [
         fuelType: "Diesel",
         engineCC: "1498",
         manufacturingYear: "2019"
+    },
+    // Bike entries for demo
+    {
+        vehicleNumber: "MH02GH3456",
+        ownerName: "Rajesh Kumar",
+        model: "Honda CB Shine",
+        insuranceStatus: "active",
+        pincode: "400001",
+        registrationDate: "2019-11-20",
+        lastInsuranceDate: "2024-11-19",
+        vehicleType: "Bike",
+        fuelType: "Petrol",
+        engineCC: "125",
+        manufacturingYear: "2019"
+    },
+    {
+        vehicleNumber: "KA02IJ7890",
+        ownerName: "Arjun Reddy",
+        model: "Royal Enfield Classic 350",
+        insuranceStatus: "active",
+        pincode: "560001",
+        registrationDate: "2020-07-12",
+        lastInsuranceDate: "2025-07-11",
+        vehicleType: "Bike",
+        fuelType: "Petrol",
+        engineCC: "349",
+        manufacturingYear: "2020"
+    },
+    {
+        vehicleNumber: "DL02KL1234",
+        ownerName: "Priya Sharma",
+        model: "Bajaj Pulsar NS200",
+        insuranceStatus: "expired",
+        pincode: "110001",
+        registrationDate: "2021-04-18",
+        lastInsuranceDate: "2023-04-17",
+        vehicleType: "Bike",
+        fuelType: "Petrol",
+        engineCC: "199.5",
+        manufacturingYear: "2021"
+    },
+    {
+        vehicleNumber: "TN08MN5678",
+        ownerName: "Meenakshi Sundaram",
+        model: "TVS Apache RTR 160",
+        insuranceStatus: "active",
+        pincode: "600001",
+        registrationDate: "2020-03-25",
+        lastInsuranceDate: "2024-03-24",
+        vehicleType: "Bike",
+        fuelType: "Petrol",
+        engineCC: "159.7",
+        manufacturingYear: "2020"
+    },
+    {
+        vehicleNumber: "GJ06PQ9012",
+        ownerName: "Amit Patel",
+        model: "Hero Splendor Plus",
+        insuranceStatus: "active",
+        pincode: "380001",
+        registrationDate: "2022-01-15",
+        lastInsuranceDate: "2025-01-14",
+        vehicleType: "Bike",
+        fuelType: "Petrol",
+        engineCC: "97.2",
+        manufacturingYear: "2022"
+    },
+    {
+        vehicleNumber: "WB03RS3456",
+        ownerName: "Ananya Das",
+        model: "Yamaha FZ-S",
+        insuranceStatus: "expired",
+        pincode: "700001",
+        registrationDate: "2018-06-30",
+        lastInsuranceDate: "2022-06-29",
+        vehicleType: "Bike",
+        fuelType: "Petrol",
+        engineCC: "149",
+        manufacturingYear: "2018"
     }
 ]; 

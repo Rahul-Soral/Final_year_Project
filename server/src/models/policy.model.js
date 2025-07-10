@@ -52,11 +52,11 @@ const policySchema = new mongoose.Schema({
     claimDescription: { type: String, required: false }
   }],
   
-  // User reference
+  // User reference (optional for non-authenticated users)
   userId: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'user',
-    required: true 
+    required: false 
   },
   
   // Timestamps

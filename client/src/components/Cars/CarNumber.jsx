@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import VehicleDropdown from '../VehicleDropdown/VehicleDropdown';
 import './CarNumber.css';
 
 const CarNumber = () => {
@@ -39,12 +40,11 @@ const CarNumber = () => {
             <h2>Enter Your Car Number</h2>
             <form onSubmit={handleSubmit}>
                 <div className="input-group">
-                    <input
-                        type="text"
+                    <VehicleDropdown
                         value={carNumber}
-                        onChange={(e) => setCarNumber(e.target.value.toUpperCase())}
-                        placeholder="Enter car number"
-                        className="car-number-input"
+                        onChange={setCarNumber}
+                        placeholder="Enter car number or select from demo database"
+                        type="car"
                     />
                     {error && <p className="error-message">{error}</p>}
                 </div>

@@ -4,13 +4,40 @@ const User = require('../models/user.model');
 const { authenticate } = require('../middleware/auth.middleware');
 const router = express.Router();
 
-// Middleware to verify token for all policy routes
-router.use(authenticate);
-
-// Get all policies for a user
-router.get('/', async (req, res) => {
+// Optional authentication - allows both authenticated and non-authenticated access
+const optionalAuth = async (req, res, next) => {
   try {
-    const policies = await Policy.find({ userId: req.user.id });
+    const authHeader = req.headers.authorization;
+    
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      if (token) {
+        const jwt = require('jsonwebtoken');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const user = await User.findById(decoded.id).select('-password');
+        if (user) {
+          req.user = user;
+        }
+      }
+    }
+    next();
+  } catch (error) {
+    // Continue without authentication if token is invalid
+    next();
+  }
+};
+
+// Get all policies for a user (or all policies if not authenticated)
+router.get('/', optionalAuth, async (req, res) => {
+  try {
+    let policies;
+    if (req.user) {
+      // If authenticated, get user's policies
+      policies = await Policy.find({ userId: req.user.id });
+    } else {
+      // If not authenticated, return empty array or mock data for demo
+      policies = [];
+    }
     
     return res.status(200).json({
       status: 'success',
@@ -26,12 +53,19 @@ router.get('/', async (req, res) => {
 });
 
 // Get a specific policy
-router.get('/:id', async (req, res) => {
+router.get('/:id', optionalAuth, async (req, res) => {
   try {
-    const policy = await Policy.findOne({ 
-      _id: req.params.id,
-      userId: req.user.id
-    });
+    let policy;
+    if (req.user) {
+      // If authenticated, check ownership
+      policy = await Policy.findOne({ 
+        _id: req.params.id,
+        userId: req.user.id
+      });
+    } else {
+      // If not authenticated, just find by ID (for demo purposes)
+      policy = await Policy.findById(req.params.id);
+    }
     
     if (!policy) {
       return res.status(404).json({
@@ -54,22 +88,24 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new policy
-router.post('/', async (req, res) => {
+router.post('/', optionalAuth, async (req, res) => {
   try {
-    // Add user ID to policy data
+    // Prepare policy data
     const policyData = {
       ...req.body,
-      userId: req.user.id
+      userId: req.user ? req.user.id : null // Allow null userId for non-authenticated users
     };
     
     // Create policy
     const policy = await Policy.create(policyData);
     
-    // Add policy to user's policies array
-    await User.findByIdAndUpdate(
-      req.user.id,
-      { $push: { policies: policy._id } }
-    );
+    // Add policy to user's policies array if user is authenticated
+    if (req.user) {
+      await User.findByIdAndUpdate(
+        req.user.id,
+        { $push: { policies: policy._id } }
+      );
+    }
     
     return res.status(201).json({
       status: 'success',
@@ -85,13 +121,19 @@ router.post('/', async (req, res) => {
 });
 
 // Update a policy
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', optionalAuth, async (req, res) => {
   try {
-    // Check if policy exists and belongs to user
-    const existingPolicy = await Policy.findOne({
-      _id: req.params.id,
-      userId: req.user.id
-    });
+    let existingPolicy;
+    if (req.user) {
+      // Check if policy exists and belongs to user
+      existingPolicy = await Policy.findOne({
+        _id: req.params.id,
+        userId: req.user.id
+      });
+    } else {
+      // If not authenticated, just check if policy exists
+      existingPolicy = await Policy.findById(req.params.id);
+    }
     
     if (!existingPolicy) {
       return res.status(404).json({
@@ -121,13 +163,19 @@ router.patch('/:id', async (req, res) => {
 });
 
 // Add a claim to a policy
-router.post('/:id/claims', async (req, res) => {
+router.post('/:id/claims', optionalAuth, async (req, res) => {
   try {
-    // Check if policy exists and belongs to user
-    const existingPolicy = await Policy.findOne({
-      _id: req.params.id,
-      userId: req.user.id
-    });
+    let existingPolicy;
+    if (req.user) {
+      // Check if policy exists and belongs to user
+      existingPolicy = await Policy.findOne({
+        _id: req.params.id,
+        userId: req.user.id
+      });
+    } else {
+      // If not authenticated, just check if policy exists
+      existingPolicy = await Policy.findById(req.params.id);
+    }
     
     if (!existingPolicy) {
       return res.status(404).json({

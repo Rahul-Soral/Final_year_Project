@@ -7,25 +7,18 @@ import car from './images/Car (1).svg';
 import gift from './images/Car Gift.png'
 import {Link, useHistory} from 'react-router-dom'
 import { useState } from 'react';
+import VehicleDropdown from '../VehicleDropdown/VehicleDropdown';
 import './home.css';
 
 const Main = () => {
     const history = useHistory();
     const [vehicleNumber, setVehicleNumber] = useState('');
 
-    const handleVehicleNumberChange = (e) => {
-        setVehicleNumber(e.target.value.toUpperCase());
-    };
+
 
     const handleSearch = () => {
         if (vehicleNumber.trim()) {
             history.push(`/vehicle-details?number=${vehicleNumber}`);
-        }
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSearch();
         }
     };
 
@@ -95,19 +88,18 @@ const Main = () => {
           <div className="home_main_mid_divs">
             <div className="vehicle-reg-card">
               <h2 className="vehicle-reg-title">Enter your vehicle registration number</h2>
-              <input
-                type="text"
-                className="vehicle-reg-input"
-                autoCapitalize="uppercase"
-                placeholder="e.g. MH05VF1234"
+              <VehicleDropdown
                 value={vehicleNumber}
-                onChange={handleVehicleNumberChange}
-                onKeyPress={handleKeyPress}
+                onChange={setVehicleNumber}
+                placeholder="e.g. MH05VF1234 or select from our demo database"
+                type="car"
+                showLabel={false}
               />
               <button 
                 className="vehicle-reg-button" 
                 type="submit"
                 onClick={handleSearch}
+                style={{ marginTop: '12px' }}
               >
                 Search your vehicle
               </button>

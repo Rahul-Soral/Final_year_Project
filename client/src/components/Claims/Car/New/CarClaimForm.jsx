@@ -21,6 +21,7 @@ import {
   FaTrafficLight,
   FaUser
 } from 'react-icons/fa';
+import VehicleDropdown from '../../../VehicleDropdown/VehicleDropdown';
 import './CarClaimForm.css';
 
 const CarClaimForm = () => {
@@ -333,15 +334,11 @@ const CarClaimForm = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="vehicleNumber">Vehicle Registration Number</label>
-            <input
-              type="text"
-              id="vehicleNumber"
-              name="vehicleNumber"
+            <VehicleDropdown
               value={basicInfo.vehicleNumber}
-              onChange={handleBasicInfoChange}
-              placeholder="Enter your vehicle number"
-              required
+              onChange={(value) => handleBasicInfoChange({ target: { name: 'vehicleNumber', value } })}
+              placeholder="Enter your vehicle number or select from demo database"
+              type="car"
             />
           </div>
 

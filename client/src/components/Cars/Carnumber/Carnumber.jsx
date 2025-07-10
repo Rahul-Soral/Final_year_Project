@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import VehicleDropdown from '../../VehicleDropdown/VehicleDropdown';
 import style from "./carnumber.module.css";
 
 function Carnumber() {
@@ -27,11 +28,12 @@ function Carnumber() {
         <h2 className={style.title}>Enter your car number</h2>
         <p className={style.subtitle}>This makes your purchase twice as fast</p>
         
-        <input
-          onChange={(e) => setNumber(e.target.value)}
-          className={style.pininput}
-          placeholder="TN74AQ5553"
+        <VehicleDropdown
           value={number}
+          onChange={setNumber}
+          placeholder="TN74AQ5553 or select from demo database"
+          type="car"
+          className={style.vehicleDropdownCustom}
         />
         
         <div className={style.buttonContainer}>

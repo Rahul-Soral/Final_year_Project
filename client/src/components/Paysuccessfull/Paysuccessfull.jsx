@@ -16,11 +16,10 @@ function Paysuccessfull() {
       try {
         setIsLoading(true);
         
-        // Check if user is logged in
+        // Check if user is logged in (optional now)
         if (!AuthService.isLoggedIn()) {
-          console.log("User not logged in, skipping policy creation");
-          setIsLoading(false);
-          return;
+          console.log("User not logged in, but proceeding with policy creation");
+          // Continue with policy creation even without authentication
         }
 
         // Check if we already created a policy (to prevent duplicates on refresh)

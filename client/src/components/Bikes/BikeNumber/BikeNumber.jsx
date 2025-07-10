@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import VehicleDropdown from '../../VehicleDropdown/VehicleDropdown';
 
 const Container = styled.div`
   display: flex;
@@ -88,8 +89,7 @@ const BikeNumber = () => {
     return regex.test(number);
   };
 
-  const handleChange = (e) => {
-    const value = e.target.value.toUpperCase();
+  const handleBikeNumberChange = (value) => {
     setBikeNumber(value);
     if (error) setError('');
   };
@@ -123,13 +123,11 @@ const BikeNumber = () => {
     <Container>
       <Title>Enter your bike registration number</Title>
       <FormContainer>
-        <Label htmlFor="bikeNumber">Registration Number</Label>
-        <Input
-          id="bikeNumber"
-          type="text"
+        <VehicleDropdown
           value={bikeNumber}
-          onChange={handleChange}
-          placeholder="Example: MH01AB1234"
+          onChange={handleBikeNumberChange}
+          placeholder="Example: MH01AB1234 or select from demo database"
+          type="bike"
         />
         <InfoText>Please enter the registration number as shown on your RC</InfoText>
         {error && <ErrorMessage>{error}</ErrorMessage>}

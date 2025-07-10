@@ -299,7 +299,7 @@ const Dashboard = () => {
 
         {error && <div className="dashboard-error">{error}</div>}
 
-        {user && (
+        {user ? (
           <div className="user-info-card">
             <div className="user-info-header">
               <h2>Personal Information</h2>
@@ -330,18 +330,48 @@ const Dashboard = () => {
               )}
             </div>
           </div>
+        ) : (
+          <div className="user-info-card">
+            <div className="user-info-header">
+              <h2>Welcome to Your Dashboard</h2>
+            </div>
+            <div className="user-info-content">
+              <p>You can browse and purchase insurance policies without logging in!</p>
+              <p>To save your policies and access your personal dashboard, please <Link to="/login">login</Link> or <Link to="/register">create an account</Link>.</p>
+            </div>
+          </div>
         )}
 
         <div className="policies-section">
-          <h2>My Policies</h2>
+          <h2>{user ? 'My Policies' : 'Insurance Policies'}</h2>
           
           {policies.length === 0 ? (
             <div className="no-policies">
-              <p>You don't have any policies yet.</p>
-              <p className="policy-note">If you've recently purchased a policy, please click the "Refresh Policies" button above.</p>
-              <Link to="/cars/useofcar" className="dashboard-button primary">
-                Buy Your First Policy
-              </Link>
+              {user ? (
+                <>
+                  <p>You don't have any policies yet.</p>
+                  <p className="policy-note">If you've recently purchased a policy, please click the "Refresh Policies" button above.</p>
+                  <Link to="/cars/useofcar" className="dashboard-button primary">
+                    Buy Your First Policy
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <p>Start exploring insurance options!</p>
+                  <p className="policy-note">You can browse and get quotes without creating an account.</p>
+                  <div className="dashboard-actions">
+                    <Link to="/cars/useofcar" className="dashboard-button primary">
+                      Car Insurance
+                    </Link>
+                    <Link to="/bikes/useofbike" className="dashboard-button primary">
+                      Bike Insurance
+                    </Link>
+                    <Link to="/health/profile" className="dashboard-button primary">
+                      Health Insurance
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <div className="policies-grid">

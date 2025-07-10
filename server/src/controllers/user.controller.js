@@ -3,6 +3,29 @@ const User = require("../models/user.model");
 const { authenticate } = require('../middleware/auth.middleware');
 const router = express.Router();
 
+// Optional authentication middleware
+const optionalAuth = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      if (token) {
+        const jwt = require('jsonwebtoken');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const user = await User.findById(decoded.id).select('-password');
+        if (user) {
+          req.user = user;
+        }
+      }
+    }
+    next();
+  } catch (error) {
+    // Continue without authentication if token is invalid
+    next();
+  }
+};
+
 // Public routes (no authentication required)
 
 // Get user by ID (for policy creation)
@@ -44,10 +67,17 @@ router.post("/", async (req, res) => {
 
 // Protected routes (authentication required)
 
-// Get current user profile
-router.get("/profile", authenticate, async (req, res) => {
+// Get current user profile (optional authentication)
+router.get("/profile", optionalAuth, async (req, res) => {
   try {
-    // req.user is set by the authenticate middleware
+    if (!req.user) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'No user authenticated',
+        data: null
+      });
+    }
+    
     return res.status(200).json({
       status: 'success',
       data: req.user
